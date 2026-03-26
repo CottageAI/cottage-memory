@@ -80,7 +80,7 @@ LIMIT ?
         
 
     @classmethod
-    def query_memories(cls, query: str, k: int=5, kind: str=None) -> dict:
+    def query_memories(cls, query: str, k: int=5, kind: str='all', conv_id: int | str='all') -> dict:
         if cls.embed_fn is None:
             return {
                 'error': 'Contextual memory not initialized. Run init_memory() method.',
@@ -89,18 +89,20 @@ LIMIT ?
 
         q_blob = cls._make_vec_blob(query)
 
-        where = ""
-        params = [q_blob, k]
-        if kind is not None:
-            where = "WHERE m.kind = ?"
-            params.append(kind),
+        params = [q_blob, k, '%']
+        params[2] = '%' if kind == 'all' else kind
+        
+        where = ''
+        if conv_id != 'all':
+            where = "AND m.conversation_id = ?"
+            params.append(conv_id)
 
         sql = f'''
 SELECT m.id, m.text, m.kind, m.created_at, m.source, m.meta_json, v.distance
 FROM memory_items AS m
 JOIN vector_quantize_scan('memory_items','embedding', ?, ?) AS v
     ON m.id = v.rowid
-{where}
+WHERE m.kind LIKE ? {where}
 ORDER BY v.distance ASC
 '''
         result = cls.dbn.execute_sql(

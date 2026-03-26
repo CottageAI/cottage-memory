@@ -127,13 +127,16 @@ cottage-init-db --db-path <path to DB>
 ## 🚀 Quick Example
 
 ```python
-from Cottage_memory.memory import ConversationsMemory, ChatMemory, CoreMemory, ContextualMemory
+from cottage_memory import ConversationsMemory, ChatMemory, CoreMemory, ContextualMemory
 
 # Initialize
 conversations = ConversationsMemory()
 chat = ChatMemory(40, 10)   # requires maximum number of messages, number to evict when full
 core = CoreMemory()
 context = ContextualMemory()
+
+# Need to initialize contextual memory
+context.init_memory()
 
 # Create or use conversation
 conv_id = conversations.add_conversation('New Conversation')
@@ -155,6 +158,9 @@ core_memories = core.get_memories()
 
 # Store contextual memory (vector)
 context.add_memory("User is building a layered memory system for AI agents.")
+
+# Get 5 most recent context from default conversation
+results = context.get_memories(conv_id=1)
 
 # Retrieve relevant context
 results = context.query_memories("memory system")

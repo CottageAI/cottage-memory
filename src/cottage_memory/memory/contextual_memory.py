@@ -8,8 +8,8 @@ from .._db.repositories.contextual_memory_repo import ContextualMemoryRepository
 
 @dataclass
 class Memory:
-    conv_id: int | None = None
     text: str
+    conv_id: int | None = None
     metadata: Dict[str, Any] = field(default_factory=dict)
     kind: str = 'note'
 
@@ -65,9 +65,10 @@ class ContextualMemory:
             for item in result['data']
         ]
     
-    def query_memories(self, query: str, k: int = 5, kind: str = 'note') -> list[dict]:
+    def query_memories(self, query: str, k: int = 5, kind: str = 'note', 
+                       conv_id: int | str='all') -> list[dict]:
         result = self._contextual_memory_repo.query_memories(
-            query, k=k, kind=kind
+            query, k=k, kind=kind, conv_id=conv_id
         )
 
         if result['error'] is not None:
