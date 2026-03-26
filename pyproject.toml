@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cottage-memory"
+version = "0.1.0"
+description = "Memory for AI agents"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "platformdirs==4.9.2",
+  "sentence-transformers==3.4.0",
+  "sqliteai-vector==0.9.92",
+]
+
+[project.scripts]
+cottage-init-db = "cottage_memory._db.db.migrate:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"cottage_memory._db.db" = ["schema.sql"]
