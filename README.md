@@ -113,7 +113,7 @@ Cottage_memory/
 ## ⚙️ Installation
 
 ```bash
-pip install git+https://github.com/karencfisher/Cottage-memory
+pip install git+https://github.com/CottageAI/cottage-memory
 ```
 
 ## Initialize database
