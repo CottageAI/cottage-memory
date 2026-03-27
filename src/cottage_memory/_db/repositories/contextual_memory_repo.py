@@ -26,7 +26,7 @@ class ContextualMemoryRepository:
             raise Exception(f"Unable to initialize: {result['error']}")
     
     @classmethod
-    def add_memory(cls, text: str, conv_id: int | None=None, kind: str="note", source: str=None, 
+    def add_memory(cls, text: str, conv_id: int | str='all', kind: str="note", source: str=None, 
                    meta: str=None) -> dict:
         if cls.embed_fn is None:
             return {
@@ -44,6 +44,7 @@ class ContextualMemoryRepository:
 INSERT INTO memory_items (conversation_id, kind, text, source, meta_json, embedding)
 VALUES (?, ?, ?, ?, ?, ?);
 '''
+        conv_id = None if conv_id == 'all' else conv_id
         params = (conv_id, kind, text, source, meta_json, blob)
 
         sql_batch = [

@@ -9,7 +9,7 @@ from .._db.repositories.contextual_memory_repo import ContextualMemoryRepository
 @dataclass
 class Memory:
     text: str
-    conv_id: int | None = None
+    conv_id: int | str = 'all'
     metadata: Dict[str, Any] = field(default_factory=dict)
     kind: str = 'note'
 
