@@ -23,7 +23,7 @@ class ChatMemory:
         if message.get('role') is None or message.get('content') is None:
             raise KeyError('Message must contain \'role\' and \'content\' keys')
         if not message['role'] in ['system', 'assistant', 'user', 'tool']:
-            raise ValueError(f'"{message['role']}" is invalid role')
+            raise ValueError(f'"{message["role"]}" is invalid role')
         
         if len(self._messages) >= self.max_messages:
             if self.persists:
@@ -34,7 +34,7 @@ class ChatMemory:
             message['content'] = json.dumps(message['content'])
         self._messages.append(message)
         
-        if self.persists:
+        if self.persists and message['role'] in ['assistant', 'user']:
             result = self._chat_repo.add_message(self.conv_id, message)
             if result['error'] is not None:
                 self._messages.pop()
