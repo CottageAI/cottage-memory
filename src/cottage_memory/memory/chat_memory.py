@@ -20,7 +20,7 @@ class ChatMemory:
         self._messages = self._fetch_messages() if self.persists else []
         
     def add_message(self, message: dict) -> None:
-        if not message.get('role') or not message.get('content'):
+        if not message.get('role') or message.get('content') is not None:
             raise KeyError('Message must contain \'role\' and \'content\' keys')
         if not message['role'] in ['system', 'assistant', 'user', 'tool']:
             raise ValueError(f'"{message['role']}" is invalid role')
