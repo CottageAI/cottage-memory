@@ -6,14 +6,15 @@ class ConversationsMemory:
         self._conversations_repo = ConversationsRepository
         self._conversations = self._fetch_conversations()
         
-    def get_conversations(self) -> dict:
+    def get_conversations(self) -> list[dict]:
         return self._conversations
     
-    def add_conversation(self, title: str) -> dict:
+    def add_conversation(self, title: str) -> int:
         result = self._conversations_repo.add_conversation(title)
         if result['error'] is not None:
             raise Exception(result['error'])
         self._conversations = self._fetch_conversations()
+        return self._conversations[-1][0]
     
     def delete_conversation(self, id: int) -> None:
         if id == 1:
