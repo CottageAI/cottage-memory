@@ -16,6 +16,12 @@ class ConversationsMemory:
         self._conversations = self._fetch_conversations()
         return self._conversations[-1][0]
     
+    def rename_conversation(self, id: int, new_title: str) -> None:
+        result = self._conversations_repo.rename_conversation(id, new_title)
+        if result['error'] is not None:
+            raise Exception(result['error'])
+        self._conversations = self._fetch_conversations()
+    
     def delete_conversation(self, id: int) -> None:
         if id == 1:
             print("Cannot delete Default Conversation")

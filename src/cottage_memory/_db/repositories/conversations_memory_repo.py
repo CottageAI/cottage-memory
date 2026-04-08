@@ -25,6 +25,16 @@ VALUES (?);
         return cls.dbn.execute_sql(sql, params)
     
     @classmethod
+    def rename_conversation(cls, id: int, new_title: str) -> dict:
+        sql = f'''
+UPDATE conversations
+SET title = ?   
+WHERE id = ?;
+'''
+        params = (new_title, id)
+        return cls.dbn.execute_sql(sql, params)
+    
+    @classmethod
     def delete_conversation(cls, id: int) -> dict:
         sql = f'''
 UPDATE conversations
