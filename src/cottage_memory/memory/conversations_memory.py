@@ -20,7 +20,7 @@ class ConversationsMemory:
         if result['error'] is not None:
             raise Exception(result['error'])
         self._conversations = self._fetch_conversations()
-        return self._conversations[-1]['id']
+        return self._conversations[0]['id']
     
     def rename_conversation(self, id: int, new_title: str) -> None:
         result = self._conversations_repo.rename_conversation(id, new_title)
