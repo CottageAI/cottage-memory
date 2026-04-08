@@ -48,4 +48,3 @@ class ConversationsMemory:
         if result['error'] is not None:
             raise Exception(result['error'])
         return result['data']
-    

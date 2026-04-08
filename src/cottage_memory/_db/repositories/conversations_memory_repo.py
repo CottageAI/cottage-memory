@@ -22,7 +22,7 @@ SELECT title FROM conversations
 WHERE id = ?;
 '''
         params = (id,)
-        return cls.dbn.execute_sql(sql, params)
+        return cls.dbn.execute_sql(sql, params, returns_data=True)
 
     
     @classmethod
