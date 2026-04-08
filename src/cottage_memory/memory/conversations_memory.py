@@ -9,6 +9,12 @@ class ConversationsMemory:
     def get_conversations(self) -> list[dict]:
         return self._conversations
     
+    def get_title(self, id: int) -> str:
+        result = self._conversations_repo.get_title(id)
+        if result['error'] is not None:
+            raise Exception(result['error'])
+        return result['data'][0]['title']
+    
     def add_conversation(self, title: str) -> int:
         result = self._conversations_repo.add_conversation(title)
         if result['error'] is not None:

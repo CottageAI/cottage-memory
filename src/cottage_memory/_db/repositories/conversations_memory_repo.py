@@ -16,6 +16,16 @@ ORDER BY id DESC;
         return cls.dbn.execute_sql(sql, returns_data=True)
 
     @classmethod
+    def get_title(cls, id: int) -> dict:
+        sql = '''
+SELECT title FROM conversations
+WHERE id = ?;
+'''
+        params = (id,)
+        return cls.dbn.execute_sql(sql, params)
+
+    
+    @classmethod
     def add_conversation(cls, title: str) -> dict:
         sql = f'''
 INSERT INTO conversations (title)
