@@ -12,12 +12,21 @@ class ChatMemory:
         assert evict_messages < max_messages, 'evict_messages must be < max_messages'
         self.max_messages = max_messages
         self.evict_messages = evict_messages
-        self.conv_id = conv_id
+        self._conv_id = conv_id
         self.persists = persists
         self.summarize_func = summarize_func
         
         self._chat_repo = ChatMemoryRepository
         self._messages = self._fetch_messages() if self.persists else []
+        
+    @property
+    def conv_id(self):
+        return self._conv_id
+    
+    @conv_id.setter
+    def conv_id(self, value):
+        self._conv_id = value
+        self._messages = self._fetch_messages()   
         
     def add_message(self, message: dict) -> None:
         if message.get('role') is None or message.get('content') is None:
