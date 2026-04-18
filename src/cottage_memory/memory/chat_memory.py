@@ -49,11 +49,12 @@ class ChatMemory:
                 self._messages.pop()
                 raise Exception(result['error'])
     
-    def get_messages(self, filter: list=None) -> list[dict]:
+    def get_messages(self, filter: list=None, all: bool=False) -> list[dict]:
+        messages = self._messages if not all else self._fetch_messages(all)
         if filter is not None:
-            return [msg for msg in self._messages if msg['role'] in filter]
+            return [msg for msg in messages if msg['role'] in filter]
         else:
-            return self._messages
+            return messages
     
     def _evict_messages(self) -> None:
         if self.summarize_func is not None:
@@ -68,10 +69,10 @@ class ChatMemory:
         if result['error'] is not None:
             raise Exception(result['error'])
     
-    def _fetch_messages(self) -> list[dict]:
+    def _fetch_messages(self, all: bool=False) -> list[dict]:
         messages = []
         
-        raw_messages = self._chat_repo.get_messages(self.conv_id)
+        raw_messages = self._chat_repo.get_messages(self.conv_id, all=all)
         if raw_messages['error'] is not None:
             raise Exception(raw_messages['error'])
         

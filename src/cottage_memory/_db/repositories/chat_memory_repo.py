@@ -7,12 +7,12 @@ class ChatMemoryRepository:
     dbn = CottageDB()
 
     @classmethod
-    def get_messages(cls, conv_id: int) -> dict:
+    def get_messages(cls, conv_id: int, all: bool=False) -> dict:
         sql = f'''
 SELECT role, content, meta_json FROM messages
 WHERE conversation_id = ?
-AND evicted = 0;
 '''
+        sql += ';' if all else 'AND evicted = 0;'
         params = (conv_id,)
         results = cls.dbn.execute_sql(sql, params, returns_data=True)
         for result in results['data']:
